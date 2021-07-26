@@ -6,12 +6,20 @@ let rightImageElement = document.getElementById('right-image');
 
 console.log(leftImageElement, middleImageElement, rightImageElement);
 
-let maxAttempts = 10;
+let maxAttempts = 25;
 let userAttemptsCounter = 0;
 
 let leftImageIndex;
 let middleImageIndex;
 let rightImageIndex;
+
+let namesArr =[];
+
+let votesArr =[];
+
+let shownArr =[];
+
+let randomArr =[];
 
 
 function FavouriteThings(name, src) {
@@ -20,10 +28,13 @@ function FavouriteThings(name, src) {
     this.votes = 0;
     this.shown = 0;
     favourites.push(this);
+    namesArr.push(this.name);
 }
 let favourites = [];
 
 console.log(favourites);
+
+console.log(namesArr);
 
 new FavouriteThings('bag', 'img/bag.jpg');
 new FavouriteThings('banana', 'img/banana.jpg');
@@ -64,6 +75,13 @@ function renderThreeImages() {
         rightImageIndex = getRandomIndex();
     }
 
+    for (let i = 0; i < randomArr.length; i++) {
+        while ((leftItemIndex==randomArr[i])||(middleItemIndex==randomArr[i])||(rightItemIndex==randomArr[i]) || (leftItemIndex == middleItemIndex) || (leftItemIndex == rightItemIndex) || (rightItemIndex == middleItemIndex)){
+            leftItemIndex = randomIndex();
+            middleItemIndex = randomIndex();
+            rightItemIndex = randomIndex();
+        }
+    }
 
     leftImageElement.src = favourites[leftImageIndex].sourse;
     middleImageElement.src = favourites[middleImageIndex].sourse;
@@ -76,6 +94,9 @@ function renderThreeImages() {
     middleImageElement.name = favourites[middleImageIndex].name;
     rightImageElement.name = favourites[rightImageIndex].name;
     // console.log(favourites[leftImageIndex].name);
+
+    
+
 }
 
 renderThreeImages();
@@ -121,8 +142,14 @@ function handleUserClick(event) {
 
             button.addEventListener('click',buttonResult);
 
-       
+            
         
+    }
+
+    for (let i = 0; i < favourites.length; i++) {
+        
+        votesArr.push(favourites[i].votes);
+        shownArr.push(favourites[i].shown);
     }
     function buttonResult() {
         
@@ -133,13 +160,90 @@ function handleUserClick(event) {
             // listItem.textContent=``
 
             listItem.textContent=`${favourites[i].name} has ${favourites[i].votes} votes and it is shown ${favourites[i].shown}` 
+
         }
+        showChart();
+       
     }
 
 
 }
 
 
+
+function showChart() {
+
+    const data = {
+      labels: namesArr,
+      datasets: [{
+        label: 'Votes',
+        data: votesArr,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 205, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(201, 203, 207, 0.2)'
+        ],
+        borderColor: [
+          'rgb(255, 99, 132)',
+          'rgb(255, 159, 64)',
+          'rgb(255, 205, 86)',
+          'rgb(75, 192, 192)',
+          'rgb(54, 162, 235)',
+          'rgb(153, 102, 255)',
+          'rgb(201, 203, 207)'
+        ],
+        borderWidth: 1
+      },
+      {
+        label: 'Shown',
+        data: shownArr,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 205, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(201, 203, 207, 0.2)'
+        ],
+        borderColor: [
+          'rgb(255, 99, 132)',
+          'rgb(255, 159, 64)',
+          'rgb(255, 205, 86)',
+          'rgb(75, 192, 192)',
+          'rgb(54, 162, 235)',
+          'rgb(153, 102, 255)',
+          'rgb(201, 203, 207)'
+        ],
+        borderWidth: 1
+      }
+  
+    ]
+    };
+  
+    const config = {
+      type: 'bar',
+      data: data,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
+    };
+  
+  
+    var myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
+    }  
+    
 // let button=document.createElement('button');
 //     console.log(button);
 //     let div =document.getElementById('parent');
