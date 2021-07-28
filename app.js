@@ -29,7 +29,6 @@ function FavouriteThings(name, src) {
   this.shown = 0;
   favourites.push(this);
   namesArr.push(this.name);
-  addToStorage();
 }
 let favourites = [];
 
@@ -70,9 +69,19 @@ function addToStorage() {
 function updateStorage() {
   let data = localStorage.getItem('Items');
   let parsedItemsArr = JSON.parse(data);
-  for (let i = 0; i < parsedItemsArr.length; i++) {
-    new FavouriteThings (parsedItemsArr[i].name,parsedItemsArr[i].sourse,parsedItemsArr[i].shown,parsedItemsArr[i].votes);
-  }
+  // for (let i = 0; i < parsedItemsArr.length; i++) {
+  //   new FavouriteThings (parsedItemsArr[i].name,parsedItemsArr[i].sourse,parsedItemsArr[i].shown,parsedItemsArr[i].votes);
+  // }
+
+   favourites=parsedItemsArr;
+
+  // if(parsedItemsArr!== null){
+  //   favourites=[];
+  //   for (let i = 0; i < parsedItemsArr.length; i++) {
+  //     new FavouriteThings(parsedItemsArr[i].name,parsedItemsArr[i].sourse);
+      
+  //   }
+  // }
   
 }
 
@@ -189,6 +198,7 @@ function showChart() {
     shownArr.push(favourites[i].shown);
     console.log(shownArr);
     console.log(favourites[i].votes);
+    addToStorage();
   }
 
   const data = {
@@ -260,8 +270,10 @@ function showChart() {
     document.getElementById('myChart'),
     config
   );
-  updateStorage();
+  
 }
+
+updateStorage();
 
 
 
