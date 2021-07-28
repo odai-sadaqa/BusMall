@@ -29,6 +29,7 @@ function FavouriteThings(name, src) {
   this.shown = 0;
   favourites.push(this);
   namesArr.push(this.name);
+  addToStorage();
 }
 let favourites = [];
 
@@ -58,6 +59,22 @@ new FavouriteThings('tauntaun', 'img/tauntaun.jpg');
 new FavouriteThings('unicorn', 'img/unicorn.jpg');
 new FavouriteThings('water-can', 'img/water-can.jpg');
 new FavouriteThings('wine-glass', 'img/wine-glass.jpg');
+
+
+
+function addToStorage() {
+  let favouritesArr = JSON.stringify(favourites);
+  localStorage.setItem('Items', favouritesArr);
+}
+
+function updateStorage() {
+  let data = localStorage.getItem('Items');
+  let parsedItemsArr = JSON.parse(data);
+  for (let i = 0; i < parsedItemsArr.length; i++) {
+    new FavouriteThings (parsedItemsArr[i].name,parsedItemsArr[i].sourse,parsedItemsArr[i].shown,parsedItemsArr[i].votes);
+  }
+  
+}
 
 function getRandomIndex() {
   return Math.floor(Math.random() * favourites.length);
@@ -243,6 +260,7 @@ function showChart() {
     document.getElementById('myChart'),
     config
   );
+  updateStorage();
 }
 
 
